@@ -5,20 +5,16 @@ import CustomButton from "../../components/CustomButton";
 import { useState } from "react";
 import { Link, useRouter } from "expo-router";
 
-const LogIn = () => {
+const ForgotPassword = () => {
   const [form, setForm] = useState({
     email: "",
-    password: "",
   });
 
-  const router = useRouter();
-
-  const onLogInPress = async () => {
-    // Login logic will be here
-
-    // On successful login, go to home
-    router.push("/(root)/(tabs)/home");
+  const onSendCodePress = async () => {
+    router.push("/(auth)/code");
   };
+
+  const router = useRouter();
 
   return (
     <ScrollView className="flex-1 bg-white">
@@ -26,7 +22,7 @@ const LogIn = () => {
         <View className="relative w-full h-[250px]">
           <Image source={images.signUpCar} className="z-0 w-full h-[250px]" />
           <Text className="text-2xl text-black font-JakartaSemiBold absolute bottom-5 left-5">
-            Log In
+            Reset password
           </Text>
         </View>
         <View className="p-5">
@@ -37,32 +33,16 @@ const LogIn = () => {
             value={form.email}
             onChangeText={(value) => setForm({ ...form, email: value })}
           />
-          <InputField
-            label="Password"
-            placeholder="Enter your password"
-            icon={icons.lock}
-            secureTextEntry={true}
-            value={form.password}
-            onChangeText={(value) => setForm({ ...form, password: value })}
-          />
 
           <CustomButton
-            title="Log In"
-            onPress={onLogInPress}
+            title="Send code"
+            onPress={onSendCodePress}
             className="mt-6"
           />
 
-          {/* Forgot Password Link */}
-          <Link
-            href="/forgot-password"
-            className="text-center mt-4 text-primary-500"
-          >
-            Forgot Password?
-          </Link>
-
           <Link
             href="/sign-up"
-            className="text-lg text-center text-general-200 mt-3"
+            className="text-lg text-center text-general-200 mt-10"
           >
             <Text>Don't have an account? </Text>
             <Text className="text-primary-500">Sign Up</Text>
@@ -73,4 +53,4 @@ const LogIn = () => {
   );
 };
 
-export default LogIn;
+export default ForgotPassword;

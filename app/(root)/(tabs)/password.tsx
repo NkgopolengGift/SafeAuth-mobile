@@ -156,15 +156,13 @@ export default function SavePassword() {
               <View className="border border-white rounded-lg p-3 mx-3">
                 {/* Generate Password */}
                 <View className="flex flex-row items-center justify-center mb-4">
-                  <Text className="text-white font-JakartaBold text-center mr-16">
+                  <Text className="text-white font-JakartaBold text-center mr-11">
                     Generate Password
                   </Text>
-                  <TouchableOpacity className="p-2 w-20 h-9 rounded-lg bg-green-500 items-center justify-center">
-                    <Image
-                      source={icons.search}
-                      className="w-4 h-5"
-                      tintColor="white"
-                    />
+                  <TouchableOpacity className="w-24 h-10 rounded-lg bg-green-500 items-center justify-center">
+                    <Text className="text-white font-JakartaLight">
+                      Generate
+                    </Text>
                   </TouchableOpacity>
                 </View>
 
@@ -175,6 +173,7 @@ export default function SavePassword() {
                   <Text className="text-white font-JakartaBold text-center mr-44">
                     Length
                   </Text>
+
                   <TouchableOpacity
                     className={`w-14 h-8 rounded-full ${length ? "bg-green-500" : "bg-gray-500"}`}
                     onPress={() => setLength(!length)}

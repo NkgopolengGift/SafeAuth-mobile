@@ -5,13 +5,13 @@ import CustomButton from "../../components/CustomButton";
 import { useState } from "react";
 import { Link, useRouter } from "expo-router";
 
-const ResetPassword = () => {
+const Code = () => {
   const [form, setForm] = useState({
     email: "",
   });
 
   const onResetPress = async () => {
-    router.push("/(root)/(tabs)/home");
+    router.push("/(auth)/reset-password");
   };
 
   const router = useRouter();
@@ -22,20 +22,20 @@ const ResetPassword = () => {
         <View className="relative w-full h-[250px]">
           <Image source={images.signUpCar} className="z-0 w-full h-[250px]" />
           <Text className="text-2xl text-black font-JakartaSemiBold absolute bottom-5 left-5">
-            Reset password
+            Verify code
           </Text>
         </View>
         <View className="p-5">
           <InputField
-            label="New Password"
-            placeholder="Enter your new Password"
-            icon={icons.lock}
+            label="Code"
+            placeholder="Enter the code you receive on your email"
+            icon={icons.email}
             value={form.email}
             onChangeText={(value) => setForm({ ...form, email: value })}
           />
 
           <CustomButton
-            title="Reset password"
+            title="Verify"
             onPress={onResetPress}
             className="mt-6"
           />
@@ -45,4 +45,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default Code;

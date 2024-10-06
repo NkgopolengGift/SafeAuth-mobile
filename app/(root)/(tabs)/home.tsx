@@ -49,6 +49,62 @@ export default function Home() {
       created: "12 August 2024",
       modified: "12 August 2024",
     },
+    {
+      platform: "Twitter",
+      email: "123@gmail.com",
+      username: "user456",
+      password: "pass456",
+      created: "12 August 2024",
+      modified: "12 August 2024",
+    },
+    {
+      platform: "Twitter",
+      email: "123@gmail.com",
+      username: "user456",
+      password: "pass456",
+      created: "12 August 2024",
+      modified: "12 August 2024",
+    },
+    {
+      platform: "Twitter",
+      email: "123@gmail.com",
+      username: "user456",
+      password: "pass456",
+      created: "12 August 2024",
+      modified: "12 August 2024",
+    },
+    {
+      platform: "Twitter",
+      email: "123@gmail.com",
+      username: "user456",
+      password: "pass456",
+      created: "12 August 2024",
+      modified: "12 August 2024",
+    },
+    {
+      platform: "Twitter",
+      email: "123@gmail.com",
+      username: "user456",
+      password: "pass456",
+      created: "12 August 2024",
+      modified: "12 August 2024",
+    },
+    {
+      platform: "Twitter",
+      email: "123@gmail.com",
+      username: "user456",
+      password: "pass456",
+      created: "12 August 2024",
+      modified: "12 August 2024",
+    },
+    {
+      platform: "Twitter",
+      email: "123@gmail.com",
+      username: "user456",
+      password: "pass456",
+      created: "12 August 2024",
+      modified: "12 August 2024",
+    },
   ];
 
   // Function to toggle details modal
@@ -87,18 +143,18 @@ export default function Home() {
       <View className="p-4">
         {/* Search Bar */}
         <InputField
-          placeholder="Search passwords"
+          placeholder="Search by platform name"
           icon={icons.search}
           value={""}
           label={""}
         />
 
-        <Text className="p-3 text-gray-300 font-JakartaLight text-[14px]">
-          List of saved passwords
+        <Text className="p-3 text-green-500 font-JakartaLight text-[14px]">
+          Saved  passwords
         </Text>
 
         {/* List of saved passwords */}
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView className="mb-56" showsVerticalScrollIndicator={false}>
           {passwords.map((item, index) => (
             <View
               key={index}
