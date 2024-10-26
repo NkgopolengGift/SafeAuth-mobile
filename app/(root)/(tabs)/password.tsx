@@ -10,6 +10,7 @@ import {
   Modal,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Picker } from "@react-native-picker/picker";
 import { icons, images } from "@/constants";
 import { useRouter } from "expo-router";
 
@@ -21,7 +22,7 @@ export default function SavePassword() {
   const [password, setPassword] = useState("");
 
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [length, setLength] = useState(true);
+  const [length, setLength] = useState(12);
   const [specialChars, setSpecialChars] = useState(true);
   const [capitalLetters, setCapitalLetters] = useState(true);
   const [numbers, setNumbers] = useState(true);
@@ -42,7 +43,7 @@ export default function SavePassword() {
       <SafeAreaView className="flex-1 bg-blue-950">
         {/* Top Bar */}
         <View className="flex-row justify-between items-center mb-4 mt-3 mx-3">
-          <TouchableOpacity onPress={() => router.push("home")}>
+          <TouchableOpacity onPress={() => router.push("/home")}>
             <Image
               source={icons.backArrow}
               className="h-6 w-15"
@@ -89,7 +90,7 @@ export default function SavePassword() {
           <Text className="font-JakartaMedium text-white mb-3">Username:</Text>
           <View className="flex-row items-center bg-white rounded-lg px-4 py-3">
             <Image
-              source={icons.email}
+              source={icons.user}
               className="w-7 h-6 mr-2"
               tintColor="gray"
             />
@@ -140,7 +141,7 @@ export default function SavePassword() {
           <SafeAreaView className="flex-1 bg-blue-950">
             <View className="absolute top-0 w-full h-[230px] bg-blue-500 rounded-3xl">
               <Image
-                source={images.signUpCar}
+                source={images.strongPass}
                 className="z-0 w-full rounded-lg h-[180px]"
               />
               <View>
@@ -154,34 +155,23 @@ export default function SavePassword() {
               </Text>
 
               <View className="border border-white rounded-lg p-3 mx-3">
-                {/* Generate Password */}
-                <View className="flex flex-row items-center justify-center mb-4">
-                  <Text className="text-white font-JakartaBold text-center mr-11">
-                    Generate Password
-                  </Text>
-                  <TouchableOpacity className="w-24 h-10 rounded-lg bg-green-500 items-center justify-center">
-                    <Text className="text-white font-JakartaLight">
-                      Generate
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-
-                <View className="border-t border-gray-300 mx-3 mb-4" />
-
-                {/* Length Toggle */}
                 <View className="flex-row items-center mb-4">
-                  <Text className="text-white font-JakartaBold text-center mr-44">
+                  <Text className="text-white font-JakartaBold mr-20">
                     Length
                   </Text>
-
-                  <TouchableOpacity
-                    className={`w-14 h-8 rounded-full ${length ? "bg-green-500" : "bg-gray-500"}`}
-                    onPress={() => setLength(!length)}
-                  >
-                    <Text className="font-JakartaMedium text-white text-center">
-                      {length ? "On" : "Off"}
-                    </Text>
-                  </TouchableOpacity>
+                  <View className="flex-1 border border-gray-500 rounded-lg overflow-hidden">
+                    <Picker
+                      selectedValue={length}
+                      onValueChange={(itemValue) => setLength(itemValue)}
+                      style={{ color: "white" }}
+                      dropdownIconColor="white"
+                    >
+                      <Picker.Item label="8" value={8} />
+                      <Picker.Item label="12" value={12} />
+                      <Picker.Item label="16" value={16} />
+                      <Picker.Item label="20" value={20} />
+                    </Picker>
+                  </View>
                 </View>
 
                 <View className="border-t border-gray-300 mx-3 mb-4" />
@@ -234,9 +224,19 @@ export default function SavePassword() {
                     </Text>
                   </TouchableOpacity>
                 </View>
+
+                <View className="border-t border-gray-300 mx-3 mb-4" />
+
+                <View className="flex items-center justify-center mb-4">
+                  <TouchableOpacity className="w-56 h-12 rounded-lg bg-green-500 items-center justify-center">
+                    <Text className="text-white font-JakartaLight text-lg">
+                      Generate password
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
 
-              <View className="flex-row mt-6">
+              <View className="flex-row mt-4 mb-5">
                 <TouchableOpacity
                   className="bg-red-500 p-2 w-24 h-11 rounded-lg  ml-5 items-center"
                   onPress={toggleModal}

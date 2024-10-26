@@ -7,46 +7,49 @@ import email from "@/assets/icons/email.png";
 import eyecross from "@/assets/icons/eyecross.png";
 import google from "@/assets/icons/google.png";
 import home from "@/assets/icons/home.png";
-import list from "@/assets/icons/list.png";
 import lock from "@/assets/icons/lock.png";
 import person from "@/assets/icons/person.png";
 import pin from "@/assets/icons/pin.png";
 import profile from "@/assets/icons/profile.png";
 import search from "@/assets/icons/search.png";
 import check from "@/assets/images/check.png";
-import getStarted from "@/assets/images/get-started.png";
-import signUpCar from "@/assets/images/signup-car.png";
 
-import ellipsis from "@/assets/icons/ellipsis.png";
 import copy from "@/assets/icons/copy.png";
 import write from "@/assets/icons/write.png";
 import bin from "@/assets/icons/bin.png";
 import key from "@/assets/icons/key.png";
 import eye from "@/assets/icons/eye.png";
-import calender from "@/assets/icons/calender.png";
+import calender from "@/assets/icons/calendar.png";
 import add from "@/assets/icons/add.png";
 import recycle from "@/assets/icons/recycle.png";
+import addIcon from "@/assets/icons/add-icon.png";
+import settings from "@/assets/icons/setting.png";
+import more from "@/assets/icons/more.png";
+import user from "@/assets/icons/user.png";
 
-//SafeAuth onboarding images
+//SafeAuth images
 import passwordManager from "@/assets/images/password-manager.jpg";
 import endToEnd from "@/assets/images/end-to-end.jpg";
 import twoFactor from "@/assets/images/two-factor-authentication.jpg";
 import passwordGenerator from "@/assets/images/password-generator.jpg";
 import zeroKnowledge from "@/assets/images/zero-knowledge-policy.jpg";
+import auth from "@/assets/images/auth.jpg";
+import strongPass from "@/assets/images/strong-pass.jpg";
 
 export const images = {
+  auth,
   passwordManager,
   endToEnd,
   twoFactor,
   passwordGenerator,
   zeroKnowledge,
-  getStarted,
-  signUpCar,
+  strongPass,
   check,
 };
 
 export const icons = {
   add,
+  addIcon,
   arrowDown,
   arrowUp,
   backArrow,
@@ -55,20 +58,21 @@ export const icons = {
   close,
   calender,
   copy,
-  ellipsis,
   email,
   eye,
   eyecross,
   key,
   google,
   home,
-  list,
+  more,
   recycle,
   lock,
   person,
   pin,
   profile,
+  settings,
   search,
+  user,
   write,
 };
 

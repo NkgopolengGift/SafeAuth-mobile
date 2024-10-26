@@ -11,16 +11,7 @@ import {
 import InputField from "@/components/InputField";
 import { icons } from "@/constants";
 import * as Clipboard from "expo-clipboard";
-
-// Define the Password type
-type Password = {
-  platform: string;
-  username: string;
-  email: string;
-  password: string;
-  created: string;
-  modified: string;
-};
+import { Password } from "@/types/type";
 
 export default function Home() {
   const [isDetailsModalVisible, setDetailsModalVisible] = useState(false);
@@ -31,6 +22,7 @@ export default function Home() {
   const [selectedPassword, setSelectedPassword] = useState<Password | null>(
     null,
   );
+  const [searchQuery, setSearchQuery] = useState("");
 
   const passwords: Password[] = [
     {
@@ -42,7 +34,31 @@ export default function Home() {
       modified: "12 August 2024",
     },
     {
-      platform: "Twitter",
+      platform: "Eskom",
+      email: "123@gmail.com",
+      username: "user456",
+      password: "pass456",
+      created: "12 August 2024",
+      modified: "12 August 2024",
+    },
+    {
+      platform: "TUT",
+      email: "123@gmail.com",
+      username: "user456",
+      password: "pass456",
+      created: "12 August 2024",
+      modified: "12 August 2024",
+    },
+    {
+      platform: "Google",
+      email: "123@gmail.com",
+      username: "user456",
+      password: "pass456",
+      created: "12 August 2024",
+      modified: "12 August 2024",
+    },
+    {
+      platform: "TikTok",
       email: "123@gmail.com",
       username: "user456",
       password: "pass456",
@@ -66,31 +82,7 @@ export default function Home() {
       modified: "12 August 2024",
     },
     {
-      platform: "Twitter",
-      email: "123@gmail.com",
-      username: "user456",
-      password: "pass456",
-      created: "12 August 2024",
-      modified: "12 August 2024",
-    },
-    {
-      platform: "Twitter",
-      email: "123@gmail.com",
-      username: "user456",
-      password: "pass456",
-      created: "12 August 2024",
-      modified: "12 August 2024",
-    },
-    {
-      platform: "Twitter",
-      email: "123@gmail.com",
-      username: "user456",
-      password: "pass456",
-      created: "12 August 2024",
-      modified: "12 August 2024",
-    },
-    {
-      platform: "Twitter",
+      platform: "Instagram",
       email: "123@gmail.com",
       username: "user456",
       password: "pass456",
@@ -106,6 +98,10 @@ export default function Home() {
       modified: "12 August 2024",
     },
   ];
+
+  const filteredPasswords = passwords.filter((password) =>
+    password.platform.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
 
   // Function to toggle details modal
   const showDetailsModal = (passwordItem: Password) => {
@@ -145,17 +141,17 @@ export default function Home() {
         <InputField
           placeholder="Search by platform name"
           icon={icons.search}
-          value={""}
+          value={searchQuery}
+          onChangeText={(text) => setSearchQuery(text)}
           label={""}
         />
 
         <Text className="p-3 text-green-500 font-JakartaLight text-[14px]">
-          Saved  passwords
+          Saved passwords
         </Text>
 
-        {/* List of saved passwords */}
         <ScrollView className="mb-56" showsVerticalScrollIndicator={false}>
-          {passwords.map((item, index) => (
+          {(searchQuery ? filteredPasswords : passwords).map((item, index) => (
             <View
               key={index}
               className="flex-row items-center justify-between p-4 mb-3 bg-gray-800 rounded-lg border border-white"
@@ -174,7 +170,7 @@ export default function Home() {
                 onPress={() => showOptionsModal(item)}
               >
                 <Image
-                  source={icons.ellipsis}
+                  source={icons.more}
                   className="h-6 w-6"
                   tintColor="white"
                 />

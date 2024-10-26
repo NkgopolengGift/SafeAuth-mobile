@@ -27,3 +27,12 @@ declare interface PaymentProps {
   driverId: number;
   rideTime: number;
 }
+
+type Password = {
+  platform: string;
+  username: string;
+  email: string;
+  password: string;
+  created: string;
+  modified: string;
+};

@@ -67,7 +67,7 @@ export default function Layout() {
           title: "Password",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabIcon source={icons.list} focused={focused} />
+            <TabIcon source={icons.addIcon} focused={focused} />
           ),
         }}
       />
@@ -77,7 +77,7 @@ export default function Layout() {
           title: "Profile",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabIcon source={icons.profile} focused={focused} />
+            <TabIcon source={icons.settings} focused={focused} />
           ),
         }}
       />

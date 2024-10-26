@@ -14,12 +14,12 @@ import { icons } from "@/constants";
 
 const Profile = () => {
   const [isBiometricEnabled, setIsBiometricEnabled] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false); // State to show/hide modal
-  const [selectedLockTime, setSelectedLockTime] = useState(1); // Default lock time is 1 minute
-  const [subject, setSubject] = useState(""); // State for subject
-  const [message, setMessage] = useState(""); // State for message
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedLockTime, setSelectedLockTime] = useState(1);
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
 
-  const lockTimes = [1, 2, 3, 4, 5]; // Array of lock time options
+  const lockTimes = [1, 2, 3, 4, 5];
 
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
@@ -113,23 +113,10 @@ const Profile = () => {
         <Text className="font-JakartaLight text-white mt-3">Feedback</Text>
 
         <View className="border border-white rounded-lg mt-4 mb-28">
-          <Text className="text-white font-JakartaMedium p-4">Subject:</Text>
-          <View className="flex-row mx-4">
-            <TextInput
-              className="flex-1 font-JakartaLight text-black bg-white rounded-lg h-12"
-              placeholder="subject"
-              placeholderTextColor="gray"
-              value={subject}
-              onChangeText={(text) => setSubject(text)}
-            />
-          </View>
-
-          <View className="border-t border-gray-300 mx-3 mt-4" />
-
-          <Text className="text-white font-JakartaMedium p-4">Content:</Text>
+          <Text className="text-white font-JakartaMedium p-4">Message:</Text>
           <View className="flex-row mx-4 ">
             <TextInput
-              className="flex-1 font-JakartaLight text-black bg-white rounded-lg h-12"
+              className="flex-1 font-JakartaLight text-black bg-white rounded-lg h-20"
               placeholder="Type your message here"
               placeholderTextColor="gray"
               value={message}
