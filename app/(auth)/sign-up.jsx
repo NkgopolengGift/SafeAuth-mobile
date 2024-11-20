@@ -1,31 +1,63 @@
-import { Image, ScrollView, Text, View } from "react-native";
+import { Alert, Image, Modal, ScrollView, Text, View } from "react-native";
 import { icons, images } from "../../constants";
 import InputField from "../../components/InputField";
 import CustomButton from "../../components/CustomButton";
+import PasswordStrengthMeter from "../../components/PasswordStrengthMeter";
 import { useState } from "react";
-import { Link } from "expo-router";
+import { Link, useNavigation } from "expo-router";
+import { signUp, verifyAccount } from "../(api)/AuthenticationService";
 
 const SignUp = () => {
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-  const [passwordStrength, setPasswordStrength] = useState("");
+  const navigation = useNavigation();
 
-  const onSignUpPress = async () => {};
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordStrength, setPasswordStrength] = useState(0);
+  const [otp, setOtp] = useState("");
 
-  const checkPasswordStrength = (password) => {
-    const isStrong =
-      /[A-Z]/.test(password) &&
-      /[0-9]/.test(password) &&
-      /[^A-Za-z0-9]/.test(password) &&
-      password.length >= 6;
+  const [verifyAccountModal, setVerifyAccountModal] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
 
-    if (password.length === 0) return setPasswordStrength("");
-    if (isStrong) return setPasswordStrength("strong");
-    if (password.length >= 4) return setPasswordStrength("medium");
-    return setPasswordStrength("weak");
+  const onSignUpPress = async () => {
+    // if (passwordStrength < 4) {
+    //   alert("Strong password must at least have 4 characters.");
+    //   return;
+    // }
+
+    if (password === confirmPassword) {
+      try {
+        const response = await signUp(email, password);
+        if (response) {
+          setVerifyAccountModal(true);
+        } else {
+          Alert.alert(
+            "Email already registered",
+            "Please log in to your account.",
+            [
+              {
+                text: "OK",
+                onPress: () => navigation.navigate("log-in"),
+              },
+            ]
+          );
+        }
+      } catch (error) {}
+    } else {
+      alert("Passwords do not match");
+    }
+  };
+
+  // Verify account
+  const onPressVerify = async () => {
+    if (otp != null) {
+      try {
+        const response = await verifyAccount(email, otp);
+        if (response != null) {
+          setIsVerified(true);
+        }
+      } catch (error) {}
+    }
   };
 
   return (
@@ -45,58 +77,31 @@ const SignUp = () => {
             label="Email"
             placeholder="Enter your email"
             icon={icons.email}
-            value={form.email}
-            onChangeText={(value) =>
-              setForm({ ...form, email: value, username: value })
-            }
+            value={email}
+            onChangeText={setEmail}
           />
+
           <InputField
             label="Password"
             placeholder="Enter your password"
             icon={icons.lock}
             secureTextEntry={true}
-            value={form.password}
-            onChangeText={(value) => {
-              setForm({ ...form, password: value });
-              checkPasswordStrength(value);
-            }}
+            value={password}
+            onChangeText={setPassword}
           />
-          {/* Password Strength Indicator */}
-          <View className="mt-2 mb-4">
-            <View
-              className={`h-2 rounded ${
-                passwordStrength === "strong"
-                  ? "bg-green-500"
-                  : passwordStrength === "medium"
-                    ? "bg-yellow-500"
-                    : "bg-red-500"
-              }`}
-              style={{
-                width:
-                  passwordStrength === "strong"
-                    ? "100%"
-                    : passwordStrength === "medium"
-                      ? "60%"
-                      : "30%",
-              }}
-            />
-            <Text className="text-sm mt-1">
-              {passwordStrength === "strong"
-                ? "Strong password"
-                : passwordStrength === "medium"
-                  ? "Medium strength"
-                  : "Weak password"}
-            </Text>
-          </View>
+
+          <PasswordStrengthMeter
+            password={password}
+            onStrengthChange={setPasswordStrength}
+          />
+
           <InputField
             label="Confirm Password"
             placeholder="Confirm your password"
             icon={icons.lock}
             secureTextEntry={true}
-            value={form.confirmPassword}
-            onChangeText={(value) =>
-              setForm({ ...form, confirmPassword: value })
-            }
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
           />
           <CustomButton
             title="Sign Up"
@@ -111,6 +116,58 @@ const SignUp = () => {
             <Text className="text-primary-500">Log In</Text>
           </Link>
         </View>
+
+        {/* Verify Account Modal */}
+        <Modal
+          transparent={true}
+          visible={verifyAccountModal}
+          animationType="slide"
+        >
+          <View className="bg-white h-[570px] mt-40">
+            <View className="bg-white px-7 py-9  mt-10 rounded-2xl min-h-[300px] ml-3 mr-3 shadow-2xl shadow-black">
+              <Text className="font-JakartaExtraBold text-2xl mb-2">
+                Verification
+              </Text>
+              <Text className="font-Jakarta mb-5">
+                We've sent a verification code to {email}.
+              </Text>
+              <InputField
+                label={"Code"}
+                icon={icons.lock}
+                placeholder={"12345"}
+                value={otp}
+                keyboardType="numeric"
+                onChangeText={setOtp}
+              />
+              <CustomButton
+                title="Verify Email"
+                onPress={onPressVerify}
+                className="mt-5 bg-success-500"
+              />
+            </View>
+          </View>
+        </Modal>
+
+        {/* Account verified Modal */}
+        <Modal transparent={true} visible={isVerified} animationType="slide">
+          <View className="bg-white px-7 py-9 rounded-2xl min-h-[300px] mt-44 ml-3 mr-3 shadow-2xl shadow-black">
+            <Image
+              source={images.check}
+              className="w-[110px] h-[110px] mx-auto my-5"
+            />
+            <Text className="text-3xl font-JakartaBold text-center">
+              Verified
+            </Text>
+            <Text className="text-base text-gray-400 font-Jakarta text-center mt-2">
+              You have successfully verified your account.
+            </Text>
+            <CustomButton
+              title="Login"
+              onPress={() => navigation.navigate("log-in")}
+              className="mt-5"
+            />
+          </View>
+        </Modal>
       </View>
     </ScrollView>
   );

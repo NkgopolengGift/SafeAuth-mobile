@@ -28,11 +28,40 @@ declare interface PaymentProps {
   rideTime: number;
 }
 
-type Password = {
-  platform: string;
+export type User = {
+  userId: string;
   username: string;
   email: string;
   password: string;
-  created: string;
-  modified: string;
+  role: Role;
+  enabled?: boolean;
+  otp?: string;
+  otpExpiresAt?: string;
+  createdAt: string;
+  createBy?: string;
+  updatedAt?: string;
+  updatedBy?: string;
+  deletedAt?: string;
+  deletedBy?: string;
 };
+
+export type Role = "USER" | "ADMIN";
+
+export type Password = {
+  passwordId: string;
+  user: User;
+  serviceName: string;
+  serviceWebsite: string;
+  serviceEmail: string;
+  serviceUsername: string;
+  servicePassword: string;
+  isActive: boolean;
+  createdAt: string;
+  modifiedAt: string;
+  deletedAt: string;
+};
+
+declare interface PasswordStrengthMeterProps {
+  password: string;
+  onStrengthChange: (strength: number) => void;
+}

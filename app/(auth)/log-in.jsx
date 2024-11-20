@@ -1,23 +1,28 @@
-import { Image, ScrollView, Text, View } from "react-native";
+import { Alert, Image, ScrollView, Text, View } from "react-native";
 import { icons, images } from "../../constants";
 import InputField from "../../components/InputField";
 import CustomButton from "../../components/CustomButton";
 import { useState } from "react";
 import { Link, useRouter } from "expo-router";
+import { logIn } from "../(api)/AuthenticationService";
 
 const LogIn = () => {
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-  });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const router = useRouter();
 
   const onLogInPress = async () => {
-    // Login logic will be here
-
-    // On successful login, go to home
-    router.push("/(root)/(tabs)/home");
+    if (password === null) {
+      Alert.alert("Password field can't be empty.");
+      if (email === null) {
+        Alert.alert("Email field can't be empty.");
+      }
+    } else {
+      const response = await logIn(email, password);
+      console.log("LogIn :", response);
+      router.push("/(root)/(tabs)/home");
+    }
   };
 
   return (
@@ -34,16 +39,16 @@ const LogIn = () => {
             label="Email"
             placeholder="Enter your email"
             icon={icons.email}
-            value={form.email}
-            onChangeText={(value) => setForm({ ...form, email: value })}
+            value={email}
+            onChangeText={setEmail}
           />
           <InputField
             label="Password"
             placeholder="Enter your password"
             icon={icons.lock}
             secureTextEntry={true}
-            value={form.password}
-            onChangeText={(value) => setForm({ ...form, password: value })}
+            value={password}
+            onChangeText={setPassword}
           />
 
           <CustomButton

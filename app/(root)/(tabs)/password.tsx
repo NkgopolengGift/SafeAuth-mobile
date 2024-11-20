@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Image,
   Text,
@@ -8,13 +8,21 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Modal,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Picker } from "@react-native-picker/picker";
 import { icons, images } from "@/constants";
 import { useRouter } from "expo-router";
+import {
+  generateStrongPassword,
+  createPassword,
+} from "@/app/(api)/PasswordService";
+import { useNavigation } from "@react-navigation/native";
 
 export default function SavePassword() {
+  const navigation = useNavigation();
+
   const router = useRouter();
   const [platformName, setPlatformName] = useState("");
   const [email, setEmail] = useState("");
@@ -27,7 +35,7 @@ export default function SavePassword() {
   const [capitalLetters, setCapitalLetters] = useState(true);
   const [numbers, setNumbers] = useState(true);
 
-  const [generatedPassword, setGeneratedPassword] = useState("ZYb#klb33OOTE");
+  const [generatedPassword, setGeneratedPassword] = useState("");
 
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
@@ -36,6 +44,59 @@ export default function SavePassword() {
   const confirmPassword = () => {
     setPassword(generatedPassword);
     toggleModal();
+  };
+
+  useEffect(() => {
+    if (isModalVisible) {
+      generateNewPassword();
+    }
+  }, [isModalVisible]);
+
+  const handleCreatePassword = async () => {
+    const userId = "e638caa2-fe8f-4b38-85bb-f8578b7b300b"; // Replace with dynamic userId if needed
+
+    if (userId) {
+      try {
+        // Construct the password request object
+        const passwordRequest = {
+          userId,
+          serviceName: platformName,
+          serviceWebsite: "",
+          serviceEmail: email,
+          serviceUsername: username,
+          servicePassword: password,
+        };
+
+        const data = await createPassword(passwordRequest);
+
+        if (data) {
+          Alert.alert(
+            "Password Saved Successfully",
+            "Stay safe with your new password!"
+          );
+
+          // Navigate back to the home page and trigger a refresh
+          navigation.navigate("home", { refresh: true });
+        }
+      } catch (error) {
+        Alert.alert("Unable to Save Password", "Please try again later.");
+      }
+    }
+  };
+
+  // Function to generate a new password based on the current settings
+  const generateNewPassword = async () => {
+    try {
+      const password = await generateStrongPassword(
+        length.toString(),
+        capitalLetters,
+        numbers,
+        specialChars
+      );
+      setGeneratedPassword(password);
+    } catch (error) {
+      console.error("Error generating password:", error);
+    }
   };
 
   return (
@@ -51,7 +112,10 @@ export default function SavePassword() {
             />
           </TouchableOpacity>
 
-          <TouchableOpacity className="bg-green-500 p-2 w-24 h-11 rounded-lg flex-row justify-center ml-12 items-center">
+          <TouchableOpacity
+            className="bg-green-500 p-2 w-24 h-11 rounded-lg flex-row justify-center ml-12 items-center"
+            onPress={handleCreatePassword}
+          >
             <Text className="font-JakartaMedium text-white">Save</Text>
           </TouchableOpacity>
         </View>
@@ -139,10 +203,10 @@ export default function SavePassword() {
           transparent={false}
         >
           <SafeAreaView className="flex-1 bg-blue-950">
-            <View className="absolute top-0 w-full h-[230px] bg-blue-500 rounded-3xl">
+            <View className="absolute top-0 w-full h-[210px] bg-blue-500 rounded-3xl">
               <Image
                 source={images.strongPass}
-                className="z-0 w-full rounded-lg h-[180px]"
+                className="z-0 w-full rounded-lg h-[150px]"
               />
               <View>
                 <Text className="text-white font-JakartaMedium text-center mt-1">
@@ -211,9 +275,9 @@ export default function SavePassword() {
                 <View className="border-t border-gray-300 mx-3 mb-4" />
 
                 {/* Numbers Toggle */}
-                <View className="flex-row items-center mb-2">
-                  <Text className="text-white font-JakartaBold text-center mr-14">
-                    Include numbers (0-9)
+                <View className="flex-row items-center mb-4">
+                  <Text className="text-white font-JakartaBold text-center mr-20">
+                    Numbers (0-9)
                   </Text>
                   <TouchableOpacity
                     className={`w-14 h-8 rounded-full ${numbers ? "bg-green-500" : "bg-gray-500"}`}
@@ -224,33 +288,36 @@ export default function SavePassword() {
                     </Text>
                   </TouchableOpacity>
                 </View>
-
-                <View className="border-t border-gray-300 mx-3 mb-4" />
-
-                <View className="flex items-center justify-center mb-4">
-                  <TouchableOpacity className="w-56 h-12 rounded-lg bg-green-500 items-center justify-center">
-                    <Text className="text-white font-JakartaLight text-lg">
-                      Generate password
-                    </Text>
-                  </TouchableOpacity>
-                </View>
               </View>
 
-              <View className="flex-row mt-4 mb-5">
-                <TouchableOpacity
-                  className="bg-red-500 p-2 w-24 h-11 rounded-lg  ml-5 items-center"
-                  onPress={toggleModal}
-                >
-                  <Text className="font-JakartaMedium text-white">Close</Text>
-                </TouchableOpacity>
+              <TouchableOpacity
+                className="h-14 w-74 mx-3 rounded-lg mt-5 bg-blue-500 justify-center content-center"
+                onPress={generateNewPassword}
+              >
+                <Text className="text-white text-sm text-center font-JakartaMedium ">
+                  Generate password
+                </Text>
+              </TouchableOpacity>
 
-                <TouchableOpacity
-                  className="bg-green-500 p-2 w-24 h-11 rounded-lg  ml-28 items-center"
-                  onPress={confirmPassword}
-                >
-                  <Text className="font-JakartaMedium text-white">Confirm</Text>
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity
+                className="h-14 w-74 mx-3 rounded-lg mt-5 bg-green-500 justify-center content-center"
+                onPress={confirmPassword}
+              >
+                <Text className="text-white text-sm text-center font-JakartaMedium ">
+                  Confirm password
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={toggleModal}
+                className="absolute top-0 right-0 p-5"
+              >
+                <Image
+                  source={icons.close}
+                  className="w-6 h-6"
+                  tintColor="white"
+                />
+              </TouchableOpacity>
             </View>
           </SafeAreaView>
         </Modal>
